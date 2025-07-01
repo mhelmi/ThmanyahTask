@@ -1,3 +1,8 @@
 <resources>
   <string name="app_name">Thmanyah App</string>
+  <string name="duration_format">%1$dh %2$dm</string>
+  <string name="hours_format">%1$dh</string>
+  <string name="minutes_format">%1$dm</string>
+  <string name="home_top_bar_title">Good Evening, %1$s</string>
+  <string name="episode_count_format">%1$d Epesods</string>
 </resources>

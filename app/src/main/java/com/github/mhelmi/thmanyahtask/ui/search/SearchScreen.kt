@@ -1,55 +1,89 @@
 package com.github.mhelmi.thmanyahtask.ui.search
 
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextField
-import androidx.compose.runtime.*
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.asPaddingValues
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.statusBars
+import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.automirrored.filled.ArrowBack
+import androidx.compose.material3.Icon
+import androidx.compose.material3.IconButton
+import androidx.compose.material3.Scaffold
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavHostController
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
+import com.github.mhelmi.thmanyahtask.ui.components.AppSearchBar
+import com.github.mhelmi.thmanyahtask.ui.components.DrawSection
+import com.github.mhelmi.thmanyahtask.ui.components.FullScreenError
+import com.github.mhelmi.thmanyahtask.ui.components.LoadingIndicator
+import com.github.mhelmi.thmanyahtask.ui.components.NoItemFound
 
 @Composable
 fun SearchScreen(
   navController: NavHostController,
   viewModel: SearchViewModel = hiltViewModel<SearchViewModel>(),
 ) {
-  var query by remember { mutableStateOf("") } // User query
-  val searchResults by viewModel.searchResults.collectAsState() // Observe search results
-  val coroutineScope = rememberCoroutineScope()
-  var searchJob: Job? = null
+  val query by viewModel.query.collectAsStateWithLifecycle()
+  val searchState by viewModel.searchState.collectAsStateWithLifecycle()
 
-  Column(modifier = Modifier.fillMaxSize()) {
-    // Search Bar
-    TextField(
-      value = query,
-      onValueChange = {
-        query = it
-        // Debounce search
-        searchJob?.cancel()
-        searchJob = coroutineScope.launch {
-          delay(200) // Wait 200ms
-          if (query.isNotEmpty()) {
-            viewModel.search(query)
-          } else {
-            viewModel.search("") // Clear results for empty query
+  Scaffold(
+    topBar = {
+      Row(
+        modifier = Modifier.padding(
+          top = WindowInsets.statusBars.asPaddingValues().calculateTopPadding()
+        ),
+        verticalAlignment = Alignment.CenterVertically
+      ) {
+        IconButton(onClick = {
+          navController.navigateUp()
+        }) {
+          Icon(
+            imageVector = Icons.AutoMirrored.Default.ArrowBack,
+            contentDescription = "Back",
+            tint = Color.White
+          )
+        }
+        Spacer(modifier = Modifier.width(16.dp))
+        AppSearchBar(
+          modifier = Modifier.weight(1f),
+          query = query,
+          onQueryChange = { viewModel.updateSearchQuery(it) }
+        )
+      }
+    }
+  ) { paddingValues ->
+    when (searchState) {
+      is SearchState.Loading -> LoadingIndicator(paddingValues)
+      is SearchState.Error -> FullScreenError(paddingValues) {
+        viewModel.retrySearch()
+      }
+
+      is SearchState.Empty -> NoItemFound(paddingValues)
+      is SearchState.Success -> {
+        val results = (searchState as SearchState.Success).results
+        LazyColumn(
+          modifier = Modifier
+            .padding(paddingValues)
+            .fillMaxSize()
+        ) {
+          items(results) { section ->
+            DrawSection(section = section)
           }
         }
-      },
-      modifier = Modifier
-        .fillMaxWidth()
-        .padding(16.dp),
-      placeholder = { Text("Search...") }
-    )
-
-    // Search Results
-//    LazyColumn(modifier = Modifier.fillMaxSize()) {
-//      items(searchResults) { content ->
-//        ContentCard(content)
-//      }
-//    }
+      }
+    }
   }
 }
+

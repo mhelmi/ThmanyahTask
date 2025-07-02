@@ -13,25 +13,6 @@ class HomeSectionsPagingSource @AssistedInject constructor(
   @Assisted private val limit: Int
 ) : PagingSource<Int, Section>() {
 
-//  override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Section> {
-//    val page = params.key ?: 1
-//    return try {
-//      val response = apiService.getHomeSections(page, params.loadSize)
-//      LoadResult.Page(
-//        data = response.sections,
-//        prevKey = if (page == 1) null else page - 1,
-//        nextKey = if (response.pagination.nextPage.isNullOrEmpty()) null else page + 1
-//      )
-//    } catch (e: Exception) {
-//      LoadResult.Error(e)
-//    }
-//  }
-//
-//  override fun getRefreshKey(state: PagingState<Int, Section>): Int? {
-//    return state.anchorPosition
-//  }
-
-
   override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Section> {
     val page = params.key ?: 1
     return try {
@@ -39,7 +20,7 @@ class HomeSectionsPagingSource @AssistedInject constructor(
       val totalPages = response.pagination.totalPages
 
       LoadResult.Page(
-        data = response.sections,
+        data = response.sections.sortedBy { it.order },
         prevKey = if (page == 1) null else page - 1,
         nextKey = if (page >= totalPages) null else page + 1 // Stop pagination if all pages are loaded
       )

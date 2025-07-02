@@ -30,7 +30,7 @@ data class Content(
 
 @Keep
 data class SearchResponse(
-  @SerializedName("results") val results: List<Content>
+  @SerializedName("sections") val results: List<Section>
 )
 
 @Keep

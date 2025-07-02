@@ -4,5 +4,10 @@
   <string name="hours_format">%1$dh</string>
   <string name="minutes_format">%1$dm</string>
   <string name="home_top_bar_title">Good Evening, %1$s</string>
-  <string name="episode_count_format">%1$d Epesods</string>
+  <string name="home_queue_section_content_count_and_duration">%1$d Episodes . %2$s</string>
+  <string name="episode_count_format">%1$d Episodes</string>
+  <string name="try_again">Try again</string>
+  <string name="error_loading_more_items">Error loading more items!</string>
+  <string name="error_no_item_found">\"No items found!\"</string>
+  <string name="search_hint">Search…</string>
 </resources>

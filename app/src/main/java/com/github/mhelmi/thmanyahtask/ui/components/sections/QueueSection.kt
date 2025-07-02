@@ -29,11 +29,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil3.compose.rememberAsyncImagePainter
+import com.github.mhelmi.thmanyahtask.R
 import com.github.mhelmi.thmanyahtask.ui.model.QueueItemUi
 
 @Composable
@@ -62,7 +64,11 @@ fun QueueSection(
         maxLines = 1,
       )
       Text(
-        text = "$episodeCount حلقات · $totalDuration",
+        text = stringResource(
+          R.string.home_queue_section_content_count_and_duration,
+          episodeCount,
+          totalDuration
+        ),
         style = MaterialTheme.typography.bodySmall.copy(
           fontSize = 14.sp,
           color = Color.Gray
@@ -154,7 +160,7 @@ fun QueueSection(
           item.queueImages.forEachIndexed { index, imageUrl ->
             Image(
               painter = rememberAsyncImagePainter(imageUrl),
-              contentDescription = "Queue Image $index",
+              contentDescription = "Queue Image",
               contentScale = ContentScale.Crop,
               modifier = Modifier
                 .size(100.dp)

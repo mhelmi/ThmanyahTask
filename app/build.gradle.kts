@@ -3,7 +3,6 @@ plugins {
   alias(libs.plugins.kotlin.android)
   alias(libs.plugins.kotlin.compose)
   alias(libs.plugins.hilt)
-//  alias(libs.plugins.kaptPlugin)
   kotlin("kapt")
 }
 
@@ -62,6 +61,7 @@ dependencies {
   implementation(libs.coil.network.okhttp)
   implementation(libs.retrofit)
   implementation(libs.converter.gson)
+  implementation(libs.logging.interceptor)
   implementation(libs.androidx.paging.runtime.ktx)
   implementation(libs.androidx.paging.compose)
 

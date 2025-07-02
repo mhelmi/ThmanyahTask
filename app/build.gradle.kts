@@ -64,13 +64,16 @@ dependencies {
   implementation(libs.logging.interceptor)
   implementation(libs.androidx.paging.runtime.ktx)
   implementation(libs.androidx.paging.compose)
-
-
   // Hilt Dependencies
   implementation(libs.hilt.android)
   kapt(libs.hilt.android.compiler)
 
   testImplementation(libs.junit)
+  testImplementation(libs.kotlinx.coroutines.test)
+  testImplementation(libs.mockk)
+  testImplementation(libs.turbine)
+  testImplementation(libs.androidx.paging.testing)
+  testImplementation(libs.fixture)
   androidTestImplementation(libs.androidx.junit)
   androidTestImplementation(libs.androidx.espresso.core)
   androidTestImplementation(platform(libs.androidx.compose.bom))

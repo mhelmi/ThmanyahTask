@@ -15,7 +15,7 @@ import com.github.mhelmi.thmanyahtask.ui.model.SquareItemUi
 import com.github.mhelmi.thmanyahtask.utils.extensions.toReadableDuration
 
 @Composable
-fun DrawSection(section: Section) {
+  fun DrawSection(section: Section) {
   when (SectionType.fromType(section.type)) {
     SectionType.SQUARE -> {
       SquareSection(

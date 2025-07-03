@@ -12,6 +12,11 @@ This project demonstrates the implementation of **HomeScreen** and **SearchScree
 
 ---
 
+## Demo
+https://github.com/user-attachments/assets/5e756044-4e86-437b-834a-a35a2c86571c
+
+---
+
 ## Tech Stack
 
 This project uses the following technologies and tools:
